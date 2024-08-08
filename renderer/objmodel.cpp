@@ -1,5 +1,6 @@
 #include "sys/stat.h"
 #include <fstream>
+#include <sstream>
 
 #include "objmodel.h"
 
@@ -84,12 +85,33 @@ OBJModel *load_obj(char *path) {
     int vertex_idx = 0;
     int face_idx = 0;
     while (std::getline(obj, line)) {
+        std::istringstream iss(line.c_str());
+        char trash;
         if (line[0] == 'v') {
-            sscanf(line.c_str(), "v %lf %lf %lf", &vertices[vertex_idx].x, &vertices[vertex_idx].y, &vertices[vertex_idx].z);
+            iss >> trash;
+            
+            for (int i = 0; i < 3; i++) {
+                iss >> vertices[vertex_idx].raw[i];
+            }
             vertex_idx++;
         }
         else if (line[0] == 'f') {
-            sscanf(line.c_str(), "f %d %d %d", &faces[face_idx].vertex_idx1, &faces[face_idx].vertex_idx2, &faces[face_idx].vertex_idx3);
+            int int_trash;
+            iss >> trash;
+
+            
+            int vertex_id;
+            int i = 0;
+            // Only need the first value in each chunk, account for possible additional texture detail in this chunk
+            // (see obj file format documentation)
+            // Adapted from Dmitry V. Sokolov's tinyrenderer repository:
+            // https://github.com/ssloy/tinyrenderer/blob/f6fecb7ad493264ecd15e230411bfb1cca539a12/model.cpp
+            while (iss >> vertex_id >> trash >> int_trash >> trash >> int_trash) {
+                // Obj vertex id starts from 1
+                vertex_id--;
+                faces[face_idx].raw[i] = vertex_id;
+                i++;
+            }
             face_idx++;
         }
     }

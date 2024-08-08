@@ -1,19 +1,13 @@
 
 
 struct Vertex {
-    double x;
-    double y;
-    double z;
-
-    Vertex(double x, double y, double z) : x(x), y(y), z(z) {}
+    double raw[3];
 };
 
 struct Face {
-    int vertex_idx1;
-    int vertex_idx2;
-    int vertex_idx3;
+    int raw[3];
 
-    Face(int vertex_idx1, int vertex_idx2, int vertex_idx3) : vertex_idx1(vertex_idx1), vertex_idx2(vertex_idx2), vertex_idx3(vertex_idx3) {}
+    // Face(int vertex_idx1, int vertex_idx2, int vertex_idx3) : vertex_idx1(vertex_idx1), vertex_idx2(vertex_idx2), vertex_idx3(vertex_idx3) {}
 };
 
 class OBJModel {
