@@ -1,5 +1,8 @@
-#include "drawer.h"
 #include <iostream>
+
+#include "objmodel.h"
+
+#include "drawer.h"
 
 void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) {
     if (x0 > x1) {
@@ -43,22 +46,6 @@ void line(int x0, int y0, int x1, int y1, TGAImage &image, TGAColor color) {
     }
 }
 
-// bool contain(int x0, int y0, int x1, int y1, int x2, int y2, int a, int b) {
-//     // A to B vector
-//     int abx = x1 - x0;
-//     int aby = y1 - y0;
-//     // A to C vector
-//     int acx = x2 - x0;
-//     int acy = y2 - y0;
-//     // A to P vector
-//     int pax = x0 - a;
-//     int pay = y0 - b;
-
-//     int u = acx * pay - acy * pax;
-//     int v = pax * aby - pay * abx;
-
-//     return u > 0 && v > 0;
-// }
 bool contain(int x0, int y0, int x1, int y1, int x2, int y2, int a, int b) {
     // A to B vector, v0
     int abx = x1 - x0;
@@ -92,15 +79,10 @@ void triangle(int x0, int y0, int x1, int y1, int x2, int y2, TGAImage &image, T
 
     for (int i = ax; i < bx; i++) {
         for (int j = ay; j < by; j++) {
-            // image.set(i, j, TGAColor(255,0,0,255)); bounding box
             if (contain(x0, y0, x1, y1, x2, y2, i, j)) {
                 image.set(i, j, color);
             }
         }
     }
-
-    // image.set(x0, y0, TGAColor(0,255,0,255));
-    // image.set(x1, y1, TGAColor(0,255,0,255));
-    // image.set(x2, y2, TGAColor(0,255,0,255));
 }
 
